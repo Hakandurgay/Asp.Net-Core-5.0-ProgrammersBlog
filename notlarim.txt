@@ -1,0 +1,7 @@
+unitofwork tasarým desene projede kullanýlan tüm repositorylerini tek bir yerden yönetilmesini saðlar.
+kullanýlacak kadar sýnýfý new le oluþturmak yerine tek bir unitofwork sýnfýný newleyerek repositoryler kullanýlabilir.
+ayný zamanda transaction yapýsý sunar.
+transaction veri tabanýna gönderilen verileerin doðrulanmasýný ve yönetilmesini saðlar.
+örneðin yeni eklenen bir article eklendiðinde diðer tablolarda da deðiþiklikler olabilri ve article tablosundan önce o tablolara veri kaydolabilir. diðer tablolarda kayýt 
+olduktan sonra aticle tablosunda bir hata meydana gelirse diðer tablolarda veri giriþi olmuþ olur. 
+transaction bütün tablolardaki verileri tek bir kez save yaparak hepsinin ayný anda olmasýný saðlar. böylece hata meydana gelirse diðer tablolarda da kayýt olunmasý önlenmiþ olur
