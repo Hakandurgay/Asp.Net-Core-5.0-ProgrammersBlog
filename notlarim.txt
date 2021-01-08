@@ -9,3 +9,12 @@ transaction bütün tablolardaki verileri tek bir kez save yaparak hepsinin ayný a
 
 .net cml bütün iþletim sistemlerinde ve derleyicilerde ayný kodlarý yazarak oluþturma saðlar
 
+
+
+result kullanýcýya bilgi döndürmek için kullanýlýr. hata, uyarý bilgilendirme vs
+
+fluent api beckend için validasyonu saðlýyor
+
+
+dtolar, veritabanýna arkaplanda eklenecek olan parametreleri ,createddate, modified name, gibi, kullanýcýlara göstermeden onlara sadece kendilerine lazým olan parametrelerin gösterilmesini saðlar
+dtolar validasyon sýnýfý olarak da kullanýlabilir
