@@ -18,3 +18,10 @@ fluent api beckend için validasyonu saðlýyor
 
 dtolar, veritabanýna arkaplanda eklenecek olan parametreleri ,createddate, modified name, gibi, kullanýcýlara göstermeden onlara sadece kendilerine lazým olan parametrelerin gösterilmesini saðlar
 dtolar validasyon sýnýfý olarak da kullanýlabilir
+
+
+dtolarda deðer atama iþleminin daha kolay ve pratik olabilmesi için automapper kütüphanesi kullanýldý
+
+
+mvc katmaný direkt olarak data katmanýna eriþmemeli. services katmaný, mvc ile data arasýnda köprü
+
