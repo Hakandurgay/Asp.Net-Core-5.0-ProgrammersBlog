@@ -25,3 +25,4 @@ dtolarda deðer atama iþleminin daha kolay ve pratik olabilmesi için automapper k
 
 mvc katmaný direkt olarak data katmanýna eriþmemeli. services katmaný, mvc ile data arasýnda köprü
 
+razor runtime compilation viewda bir þey deðiþtirince sayfayý yenileyince tarayýcýda da deðiþmesini saðlýyor.

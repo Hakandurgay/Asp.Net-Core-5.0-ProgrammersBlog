@@ -64,7 +64,7 @@ namespace ProgrammersBlog.Services.Concrete
                 {
                     Category = category,
                     ResultStatus = ResultStatus.Success
-                };
+                });
             }
             return new DataResult<CategoryDto>(ResultStatus.Error, "Böyle bir kategori bulunamadı.", null);
         }
@@ -78,7 +78,7 @@ namespace ProgrammersBlog.Services.Concrete
                 {
                     Categories = categories,
                     ResultStatus = ResultStatus.Success
-                };
+                });
 
             }
             return new DataResult<CategoryListDto>(ResultStatus.Error, "Hiçbir kategori bulunamadı.", null);
@@ -94,7 +94,7 @@ namespace ProgrammersBlog.Services.Concrete
                 {
                     Categories = categories,
                     ResultStatus = ResultStatus.Success
-                };
+                });
             }
             return new DataResult<CategoryListDto>(ResultStatus.Error, "Hiçbir kateogori bulunamadı.", null);
 
@@ -167,7 +167,7 @@ namespace ProgrammersBlog.Services.Concrete
                 {
                     Categories = categories,
                     ResultStatus = ResultStatus.Success
-                };
+                });
             }
             return new DataResult<CategoryListDto>(ResultStatus.Error, "Hiçbir kateogori bulunamadı.", null);
         }

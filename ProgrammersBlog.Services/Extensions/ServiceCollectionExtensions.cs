@@ -12,7 +12,7 @@ namespace ProgrammersBlog.Services.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollention)
+        public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollention)  
         {
             serviceCollention.AddDbContext<ProgrammersBlogContext>();
             serviceCollention.AddScoped<IUnitOfWork, UnitOfWork>();
