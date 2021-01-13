@@ -26,3 +26,12 @@ dtolarda deðer atama iþleminin daha kolay ve pratik olabilmesi için automapper k
 mvc katmaný direkt olarak data katmanýna eriþmemeli. services katmaný, mvc ile data arasýnda köprü
 
 razor runtime compilation viewda bir þey deðiþtirince sayfayý yenileyince tarayýcýda da deðiþmesini saðlýyor.
+
+
+admin layoutu üzerine gerekli partial viewleri ekleme
+
+head etiketleri, js dosyalarý gibi satýrlar partial view içine yazýlarak sadelik saðlanabilir.
+
+rendersection false yapýlýrsa istenilen sayfalarda kullanýlabilir
+
+trade-safe farklý tradelerden yani farklý iþ parçacýklarý üzerinden db contexti çaðýrmak ve kullanmaktýr. ef dbcontext trade safe deðil

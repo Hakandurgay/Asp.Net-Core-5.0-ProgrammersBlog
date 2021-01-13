@@ -29,14 +29,16 @@ namespace ProgrammersBlog.Services.Concrete
             article.CreatedByName = createdByName;
             article.ModifiedByName = createdByName;
             article.UserId = 1;
-            await _unitOfWork.Articles.AddAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+            await _unitOfWork.Articles.AddAsync(article);//.ContinueWith(t => _unitOfWork.SaveAsync());
+            await _unitOfWork.SaveAsync();
             return new Result(ResultStatus.Success, $"{articleAddDto.Title} başlıklı makale başarıyla eklenmiştir");
         }
         public async Task<IResult> Update(ArticleUpdateDto articleUpdateDto, string modifiedByName)
         {
             var article = _mapper.Map<Article>(articleUpdateDto);
             article.ModifiedByName = modifiedByName;
-            await _unitOfWork.Articles.UpdateAsync(article).ContinueWith(t=>_unitOfWork.SaveAsync());
+            await _unitOfWork.Articles.UpdateAsync(article);//.ContinueWith(t=>_unitOfWork.SaveAsync());
+            await _unitOfWork.SaveAsync();
             return new Result(ResultStatus.Success, $"{articleUpdateDto.Title} başlıklı makale başarıyla güncellenmiştir");
 
         }
@@ -49,7 +51,8 @@ namespace ProgrammersBlog.Services.Concrete
                 article.IsDeleted = true;
                 article.ModifiedByName = modifiedByName;
                 article.ModifiedDate = DateTime.Now;
-                await _unitOfWork.Articles.UpdateAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+                await _unitOfWork.Articles.UpdateAsync(article);//.ContinueWith(t => _unitOfWork.SaveAsync());
+                await _unitOfWork.SaveAsync();
                 return new Result(ResultStatus.Success, $"{article.Title} başlıklı makale başarıyla silinmiştir");
             }
             return new Result(ResultStatus.Error, "Böyle bir makale bulunamadı.");
@@ -61,8 +64,9 @@ namespace ProgrammersBlog.Services.Concrete
             if (result)
             {
                 var article = await _unitOfWork.Articles.GetAsync(a => a.Id == articleId);
-               
-                await _unitOfWork.Articles.DeleteAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+
+                await _unitOfWork.Articles.DeleteAsync(article);//.ContinueWith(t => _unitOfWork.SaveAsync());
+                await _unitOfWork.SaveAsync();
                 return new Result(ResultStatus.Success, $"{article.Title} başlıklı makale başarıyla veritabanından silinmiştir");
             }
             return new Result(ResultStatus.Error, "Böyle bir makale bulunamadı.");
