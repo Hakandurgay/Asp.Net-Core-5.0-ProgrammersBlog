@@ -42,15 +42,22 @@ namespace ProgrammersBlog.Services.Concrete
         //                                                     //   await _unitOfWork.SaveAsync();
         //    return new Result(ResultStatus.Success, $"{categoryAddDto.Name} adlı kategori başarıyla eklenmiştir");
         //}
-        public async Task<IResult> Add(CategoryAddDto categoryAddDto, string createdByName)
+        public async Task<IDataResult<CategoryDto>> Add(CategoryAddDto categoryAddDto, string createdByName)
         {
             var category = _mapper.Map<Category>(categoryAddDto);
 
             category.CreatedByName = createdByName;
             category.ModifiedByName = createdByName;
-          //  await _unitOfWork.Categories.AddAsync(category).ContinueWith(t => _unitOfWork.SaveAsync());   //biraz bekleyip aşağıdakini çalıştırmak yerine çok hızlı bir şekilde bu task ile devam ediyor
+        var addedCategory=    await _unitOfWork.Categories.AddAsync(category);//.ContinueWith(t => _unitOfWork.SaveAsync());   //biraz bekleyip aşağıdakini çalıştırmak yerine çok hızlı bir şekilde bu task ile devam ediyor
         await _unitOfWork.SaveAsync(); //ef core 5 trade safe olmadığı için böyle olmalı
-            return new Result(ResultStatus.Success, $"{categoryAddDto.Name} adlı kategori başarıyla eklenmiştir");
+            return new DataResult<CategoryDto>(ResultStatus.Success, $"{categoryAddDto.Name} adlı kategori başarıyla eklenmiştir", new CategoryDto
+            {
+                Category = addedCategory,
+                ResultStatus = ResultStatus.Success,
+                Message=$"{categoryAddDto.Name} adlı kategori başarıyla eklenmiştir"
+            }) ;
+            
+            
         }
 
 
@@ -65,7 +72,12 @@ namespace ProgrammersBlog.Services.Concrete
                     ResultStatus = ResultStatus.Success
                 });
             }
-            return new DataResult<CategoryDto>(ResultStatus.Error, "Böyle bir kategori bulunamadı.", null);
+            return new DataResult<CategoryDto>(ResultStatus.Error, "Böyle bir kategori bulunamadı.", new CategoryDto{
+
+                Category=null,
+                ResultStatus=ResultStatus.Error,
+                Message= "Böyle bir kategori bulunamadı."
+            });
         }
 
         public async Task<IDataResult<CategoryListDto>> GetAll()
@@ -130,7 +142,6 @@ namespace ProgrammersBlog.Services.Concrete
                 return new Result(ResultStatus.Success, $"{category.Name } adlı kategori başarıyla veritabanından silinmiştir ");
             }
             return new Result(ResultStatus.Error, "Böyle bir kategori bulunamadı.");
-
         }
         //mapping olmadan
         //public async Task<IResult> Update(CategoryUpdateDto categoryUpdateDto, string modifiedByName)
@@ -149,18 +160,20 @@ namespace ProgrammersBlog.Services.Concrete
         //        return new Result(ResultStatus.Success, $"{categoryUpdateDto.Name } adlı kategori başarıyla güncellenmiştir ");
         //    }
         //    return new Result(ResultStatus.Error, "Böyle bir kategori bulunamadı.");
-
         //}
-        public async Task<IResult> Update(CategoryUpdateDto categoryUpdateDto, string modifiedByName)
+        public async Task<IDataResult<CategoryDto>> Update(CategoryUpdateDto categoryUpdateDto, string modifiedByName)
         {
-
             var category = _mapper.Map<Category>(categoryUpdateDto);
             category.ModifiedByName = modifiedByName;
 
-
-            await _unitOfWork.Categories.UpdateAsync(category);//.ContinueWith(t => _unitOfWork.SaveAsync());
+        var updatedCategory=    await _unitOfWork.Categories.UpdateAsync(category);//.ContinueWith(t => _unitOfWork.SaveAsync());
             await _unitOfWork.SaveAsync();
-            return new Result(ResultStatus.Success, $"{categoryUpdateDto.Name } adlı kategori başarıyla güncellenmiştir ");
+            return new DataResult<CategoryDto>(ResultStatus.Success, $"{categoryUpdateDto.Name } adlı kategori başarıyla güncellenmiştir ", new CategoryDto
+            {
+                 Category=updatedCategory,
+                ResultStatus = ResultStatus.Success,
+                Message = $"{categoryUpdateDto.Name} adlı kategori başarıyla eklenmiştir"
+            });
          
           
 
