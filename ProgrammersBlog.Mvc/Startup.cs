@@ -9,6 +9,7 @@ using ProgrammersBlog.Services.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Mvc
@@ -18,7 +19,10 @@ namespace ProgrammersBlog.Mvc
       
         public void ConfigureServices(IServiceCollection services)  //dbcontenxt services katmanýnda extension klasöründe tanýmlandý.
         {
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();//frontend d her bir iþlemi derlemeden kaydederek görebilmeyi saðlar
+            services.AddControllersWithViews().AddRazorRuntimeCompilation().AddJsonOptions(opt=> {
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            } ) ;//frontend d her bir iþlemi derlemeden kaydederek görebilmeyi saðlar
         //    services.AddAutoMapper(typeof(Startup));  //derlenme esnasýnda mapping sýnýflarýný bulup ekliyor
            services.AddAutoMapper(typeof(CategoryProfile),typeof(ArticleProfile)); 
             services.LoadMyServices();

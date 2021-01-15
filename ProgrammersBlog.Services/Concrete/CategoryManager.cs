@@ -111,11 +111,17 @@ namespace ProgrammersBlog.Services.Concrete
                     Categories = categories,
                     ResultStatus = ResultStatus.Success
                 });
+
             }
-            return new DataResult<CategoryListDto>(ResultStatus.Error, "Hiçbir kateogori bulunamadı.", null);
+            return new DataResult<CategoryListDto>(ResultStatus.Error, "Hiçbir kategori bulunamadı.", new CategoryListDto
+            {
+                Categories = null,
+                ResultStatus = ResultStatus.Error,
+                Message = "Hiçbir kategori bulunamadı."
+            });
 
         }
-        public async Task<IResult> Delete(int categoryId, string modifiedByName)
+        public async Task<IDataResult<CategoryDto>> Delete(int categoryId, string modifiedByName)
         {
             var category = await _unitOfWork.Categories.GetAsync(c => c.Id == categoryId);
             if (category != null)
@@ -123,11 +129,21 @@ namespace ProgrammersBlog.Services.Concrete
                 category.IsDeleted = true;
                 category.ModifiedByName = modifiedByName;
                 category.ModifiedDate = DateTime.Now;
-                await _unitOfWork.Categories.UpdateAsync(category);//.ContinueWith(t => _unitOfWork.SaveAsync());
+                var deletedCategory = await _unitOfWork.Categories.UpdateAsync(category);//.ContinueWith(t => _unitOfWork.SaveAsync());
                 await _unitOfWork.SaveAsync();
-                return new Result(ResultStatus.Success, $"{category.Name } adlı kategori başarıyla silinmiştir ");
+                return new DataResult<CategoryDto>(ResultStatus.Success, $"{deletedCategory.Name } adlı kategori başarıyla silinmiştir ", new CategoryDto
+                {
+                    Category = deletedCategory,
+                    ResultStatus = ResultStatus.Success,
+                    Message = $"{deletedCategory.Name} adlı kategori başarıyla silinmiştir"
+                });
             }
-            return new Result(ResultStatus.Error, "Böyle bir kategori bulunamadı.");
+            return new DataResult<CategoryDto>(ResultStatus.Error, $"böyle bir kategori bulunamadı ", new CategoryDto
+            {
+                Category = null,
+                ResultStatus = ResultStatus.Error,
+                Message = $"böyle bir kategori bulunamadı "
+            });
 
         }
         public async Task<IResult> HardDelete(int categoryId)
