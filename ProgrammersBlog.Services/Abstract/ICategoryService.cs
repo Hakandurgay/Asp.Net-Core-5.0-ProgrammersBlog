@@ -13,6 +13,7 @@ namespace ProgrammersBlog.Services.Abstract
         // Task<IDataResult<Category>> Get(int categoryId); bunun yerine aşağıdaki gibi olmalı
 
         Task<IDataResult<CategoryDto>> Get(int categoryId);
+        Task<IDataResult<CategoryUpdateDto>> GetCategoryUpdateDto(int categoryId);
         //   Task<IDataResult<IList<Category>>> GetAll();
         Task<IDataResult<CategoryListDto>> GetAll();
         //Task<IDataResult<IList<Category>>> GetAllByNonDeleted();
