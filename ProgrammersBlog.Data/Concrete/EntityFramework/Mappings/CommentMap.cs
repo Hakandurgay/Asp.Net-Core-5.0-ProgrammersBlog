@@ -29,51 +29,51 @@ namespace ProgrammersBlog.Data.Concrete.EntityFramework.Mappings
             builder.HasOne<Article>(c => c.Article).WithMany(a => a.Comments).HasForeignKey(c => c.ArticleId);
             builder.ToTable("Comments");
 
-            builder.HasData(
-                new Comment
-                {
-                    Id = 1,
-                    ArticleId = 1,
-                    Text = "Yaygın inancın tersine, Lorem Ipsum rastgele sözcüklerden oluşmaz. Kökleri M.Ö. 45 tarihinden bu yana klasik Latin edebiyatına kadar uzanan 2000 yıllık bir geçmişi vardır. Virginia'daki Hampden-Sydney College'dan Latince profesörü Richard McClintock,",
-                    IsActive = true,
-                    IsDeleted = false,
-                    CreatedByName = "InitialCreate",
-                    CreatedDate = DateTime.Now,
-                    ModifiedByName = "InitialCreate",
-                    ModifiedDate = DateTime.Now,
-                    Note = "C#  Makale Yorum",
+            //builder.HasData(
+            //    new Comment
+            //    {
+            //        Id = 1,
+            //        ArticleId = 1,
+            //        Text = "Yaygın inancın tersine, Lorem Ipsum rastgele sözcüklerden oluşmaz. Kökleri M.Ö. 45 tarihinden bu yana klasik Latin edebiyatına kadar uzanan 2000 yıllık bir geçmişi vardır. Virginia'daki Hampden-Sydney College'dan Latince profesörü Richard McClintock,",
+            //        IsActive = true,
+            //        IsDeleted = false,
+            //        CreatedByName = "InitialCreate",
+            //        CreatedDate = DateTime.Now,
+            //        ModifiedByName = "InitialCreate",
+            //        ModifiedDate = DateTime.Now,
+            //        Note = "C#  Makale Yorum",
 
-                },
-                      new Comment
-                      {
-                          Id = 2,
-                          ArticleId = 2,
-                          Text = "Yaygın inancın tersine, Lorem Ipsum rastgele sözcüklerden oluşmaz. Kökleri M.Ö. 45 tarihinden bu yana klasik Latin edebiyatına kadar uzanan 2000 yıllık bir geçmişi vardır. Virginia'daki Hampden-Sydney College'dan Latince profesörü Richard McClintock,",
-                          IsActive = true,
-                          IsDeleted = false,
-                          CreatedByName = "InitialCreate",
-                          CreatedDate = DateTime.Now,
-                          ModifiedByName = "InitialCreate",
-                          ModifiedDate = DateTime.Now,
-                          Note = "C++  Makale Yorum",
+            //    },
+            //          new Comment
+            //          {
+            //              Id = 2,
+            //              ArticleId = 2,
+            //              Text = "Yaygın inancın tersine, Lorem Ipsum rastgele sözcüklerden oluşmaz. Kökleri M.Ö. 45 tarihinden bu yana klasik Latin edebiyatına kadar uzanan 2000 yıllık bir geçmişi vardır. Virginia'daki Hampden-Sydney College'dan Latince profesörü Richard McClintock,",
+            //              IsActive = true,
+            //              IsDeleted = false,
+            //              CreatedByName = "InitialCreate",
+            //              CreatedDate = DateTime.Now,
+            //              ModifiedByName = "InitialCreate",
+            //              ModifiedDate = DateTime.Now,
+            //              Note = "C++  Makale Yorum",
 
-                      },
+            //          },
 
-                        new Comment
-                        {
-                            Id = 3,
-                            ArticleId = 3,
-                            Text = "Yaygın inancın tersine, Lorem Ipsum rastgele sözcüklerden oluşmaz. Kökleri M.Ö. 45 tarihinden bu yana klasik Latin edebiyatına kadar uzanan 2000 yıllık bir geçmişi vardır. Virginia'daki Hampden-Sydney College'dan Latince profesörü Richard McClintock,",
-                            IsActive = true,
-                            IsDeleted = false,
-                            CreatedByName = "InitialCreate",
-                            CreatedDate = DateTime.Now,
-                            ModifiedByName = "InitialCreate",
-                            ModifiedDate = DateTime.Now,
-                            Note = "JavaScript  Makale Yorum",
+            //            new Comment
+            //            {
+            //                Id = 3,
+            //                ArticleId = 3,
+            //                Text = "Yaygın inancın tersine, Lorem Ipsum rastgele sözcüklerden oluşmaz. Kökleri M.Ö. 45 tarihinden bu yana klasik Latin edebiyatına kadar uzanan 2000 yıllık bir geçmişi vardır. Virginia'daki Hampden-Sydney College'dan Latince profesörü Richard McClintock,",
+            //                IsActive = true,
+            //                IsDeleted = false,
+            //                CreatedByName = "InitialCreate",
+            //                CreatedDate = DateTime.Now,
+            //                ModifiedByName = "InitialCreate",
+            //                ModifiedDate = DateTime.Now,
+            //                Note = "JavaScript  Makale Yorum",
 
-                        }
-                );
+            //            }
+            //    );
 
 
         }

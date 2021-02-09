@@ -23,9 +23,25 @@ namespace ProgrammersBlog.Mvc
                 opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             } ) ;//frontend d her bir iþlemi derlemeden kaydederek görebilmeyi saðlar
-        //    services.AddAutoMapper(typeof(Startup));  //derlenme esnasýnda mapping sýnýflarýný bulup ekliyor
+                 //    services.AddAutoMapper(typeof(Startup));  //derlenme esnasýnda mapping sýnýflarýný bulup ekliyor
+            services.AddSession();
            services.AddAutoMapper(typeof(CategoryProfile),typeof(ArticleProfile)); 
             services.LoadMyServices();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = new PathString("/Admin/User/Login");
+                options.LogoutPath = new PathString("/Admin/User/Logout");
+                options.Cookie = new CookieBuilder
+                {
+                    Name = "ProgrammersBlog",
+                    HttpOnly = true, //sadece http olan baðlantýlar kabul ediliyro
+                    SameSite = SameSiteMode.Strict, //saldýrganlar kendi cookiemizi farklý adresler kullanarak bizmiþiz gibi kullanabilir. strict farklý adreslerden gelen istekleri engeller
+                    SecurePolicy = CookieSecurePolicy.SameAsRequest, //burasýnýn gerçek projelerde always olmasý gerek, test olduðu için böyle ayarlandýr. bilgiler http üzerinden aktarýlmasýný saðlar
+                };
+                options.SlidingExpiration = true; //giriþ yapma süresini belirler. giriþ yaptýktan sonra kullanýcýya tanýnan zaman. bu süre içerisinde kullanýcýnýn ayný cookie bilgieri üzerinden tekrar giriþ yapmasýný engeller
+                options.ExpireTimeSpan = System.TimeSpan.FromDays(7); //7 gün
+                options.AccessDeniedPath = new PathString("/Admin/User/Logout");
+            });
         }
 
      
@@ -36,9 +52,13 @@ namespace ProgrammersBlog.Mvc
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages(); //sitede bulunmayan sayfaya gidilirse 404 döndürür. bu yazýlmazsa beyaz sayfa döndürür. kolaylýk için eklendi
             }
+            app.UseSession();
             app.UseStaticFiles(); //resimler cssler js dosyalarý için
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
