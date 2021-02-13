@@ -35,3 +35,6 @@ head etiketleri, js dosyalarý gibi satýrlar partial view içine yazýlarak sadelik
 rendersection false yapýlýrsa istenilen sayfalarda kullanýlabilir
 
 trade-safe farklý tradelerden yani farklý iþ parçacýklarý üzerinden db contexti çaðýrmak ve kullanmaktýr. ef dbcontext trade safe deðil
+
+*eðer bir katmana yüklenmiþ bir nuget packageý baþka bir katmanda da kullanmak istersek browse kýsmýndan yüklemek yerine install kýsmýndan katman seçerek yüklenmeli. Böylece
+güncelleme geldiðinde ayný setup dosyasýndan yükleneceði için hepsinde senkron olarak güncellenmiþ olur. diðer türlü bir katmanda güncellenip diðerinde farklý versiyon kalabilir
