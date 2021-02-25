@@ -21,7 +21,7 @@ namespace ProgrammersBlog.Entities.Dtos
         [MinLength(10, ErrorMessage = "{0} {1} Karakterden Küçük Olmamalıdır.")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-   -
+   
         [DisplayName("Telefon Numarası")]
         [Required(ErrorMessage = "{0} Boş Geçilmemelidir.")]  //kategori adı yazar sıfır yerine
         [MaxLength(13, ErrorMessage = "{0} {1} Karakterden Büyük Olmamalıdır.")] //fluent api ile veritabanına eklerken kontrol ediliyordu burda kullanıcıdan alınırken kontrol ediliyor

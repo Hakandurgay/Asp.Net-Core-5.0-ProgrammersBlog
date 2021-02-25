@@ -14,6 +14,7 @@ namespace ProgrammersBlog.Mvc.AutoMapper.Profiles
         {
             CreateMap<UserAddDto, User>(); //user add dto yu user sınıfına map eder
             CreateMap<User, UserUpdateDto>(); 
+            CreateMap<UserUpdateDto, User>(); 
         }
     }
 }

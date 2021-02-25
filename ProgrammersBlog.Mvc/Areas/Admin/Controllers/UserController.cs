@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,16 +41,22 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             });
         }
         [HttpGet]
+
+        public IActionResult UserLogin()
+        {
+            return View();
+        }
+        [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userManager.Users.ToListAsync();
-            var userListDto=JsonSerializer.Serialize(new UserListDto
+            var userListDto = JsonSerializer.Serialize(new UserListDto
             {
                 Users = users,
                 ResultStatus = ResultStatus.Success
             }, new JsonSerializerOptions
             {
-                ReferenceHandler=ReferenceHandler.Preserve            
+                ReferenceHandler = ReferenceHandler.Preserve
             });
             return Json(userListDto);
         }
@@ -58,28 +65,28 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             var result = await _userManager.DeleteAsync(user);
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 var deletedUser = JsonSerializer.Serialize(new UserDto
                 {
-                    ResultStatus=ResultStatus.Success,
-                    Message=$"{user.UserName} adlı kullanıcı adına sahip kullanıcı başarıyla silinmiştir",
-                    User=user
+                    ResultStatus = ResultStatus.Success,
+                    Message = $"{user.UserName} adlı kullanıcı adına sahip kullanıcı başarıyla silinmiştir",
+                    User = user
                 });
                 return Json(deletedUser);
             }
             else
             {
                 string errorMessages = String.Empty;
-                foreach(var error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     errorMessages = $"{error.Description}\n";
                 }
                 var deletedUserErrorModel = JsonSerializer.Serialize(new UserDto
                 {
-                    ResultStatus=ResultStatus.Error,
-                    Message=$"{user.UserName} adlı kullanıcı adına sahip kullanıcı silinirken bazı hatalar oluştu\n{errorMessages}",
-                    User=user
+                    ResultStatus = ResultStatus.Error,
+                    Message = $"{user.UserName} adlı kullanıcı adına sahip kullanıcı silinirken bazı hatalar oluştu\n{errorMessages}",
+                    User = user
                 });
                 return Json(deletedUserErrorModel);
             }
@@ -102,33 +109,33 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                userAddDto.Picture = await ImageUpload(userAddDto);
+                userAddDto.Picture = await ImageUpload(userAddDto.UserName,userAddDto.PictureFile);
                 var user = _mapper.Map<User>(userAddDto);
                 var result = await _userManager.CreateAsync(user, userAddDto.Password);
                 if (result.Succeeded)
                 {
                     var userAddAjaxViewModel = JsonSerializer.Serialize(new UserAddAjaxViewModel
                     {
-                           UserDto=new UserDto
-                           {
-                               ResultStatus = ResultStatus.Success,
-                               Message=$"{user.UserName} adlı kullanıcı başarıyla eklenmiştir",
-                               User=user
-                           },
-                           UserAddPartial=await this.RenderViewToStringAsync("_UserAddPartial", userAddDto)
+                        UserDto = new UserDto
+                        {
+                            ResultStatus = ResultStatus.Success,
+                            Message = $"{user.UserName} adlı kullanıcı başarıyla eklenmiştir",
+                            User = user
+                        },
+                        UserAddPartial = await this.RenderViewToStringAsync("_UserAddPartial", userAddDto)
                     });
                     return Json(userAddAjaxViewModel);
                 }
                 else
                 {
-                    foreach(var error in result.Errors)
+                    foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError("", error.Description);
                     }
                     var userAddAjaxErrorModel = JsonSerializer.Serialize(new UserAddAjaxViewModel
                     {
-                        UserAddDto=userAddDto,
-                        UserAddPartial=await this.RenderViewToStringAsync("_UserAddPartial",userAddDto)
+                        UserAddDto = userAddDto,
+                        UserAddPartial = await this.RenderViewToStringAsync("_UserAddPartial", userAddDto)
                     });
                     return Json(userAddAjaxErrorModel);
                 }
@@ -144,24 +151,85 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             });
             return PartialView("_UserAddPartial");
         }
-        public async Task<string> ImageUpload(UserAddDto userAddDto)
+        [HttpPost]
+        public async Task<IActionResult> Update(UserUpdateDto userUpdateDto)
+        {
+            if (ModelState.IsValid)
+            {
+                bool isNewPictureUploaded = false;
+                var oldUser = await _userManager.FindByIdAsync(userUpdateDto.Id.ToString());
+                var oldUserPicture = oldUser.Picture;
+                if (userUpdateDto.PictureFile != null)
+                {
+                    userUpdateDto.Picture = await ImageUpload(userUpdateDto.UserName, userUpdateDto.PictureFile);
+                    isNewPictureUploaded = true;
+                }
+                var updatedUser = _mapper.Map<UserUpdateDto, User>(userUpdateDto, oldUser);
+                var result = await _userManager.UpdateAsync(updatedUser);
+                if (result.Succeeded)
+                {
+                    if (isNewPictureUploaded)
+                    {
+                        ImageDelete(oldUserPicture);
+                    }
+                    var userUpdateViewModel = JsonSerializer.Serialize(new UserUpdateAjaxViewModel
+                    {
+                        UserDto = new UserDto
+                        {
+                            ResultStatus = ResultStatus.Success,
+                            Message = $"{updatedUser.UserName} adlı kullanıcı güncellenmiştir",
+                            User = updatedUser
+                        },
+                        UserUpdatePartial = await this.RenderViewToStringAsync("_UserUpdatePartial", userUpdateDto)
+                    });
+                    return Json(userUpdateViewModel);
+                }
+                else
+                {
+                    foreach(var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    var userUpdateErrorViewModel = JsonSerializer.Serialize(new UserUpdateAjaxViewModel
+                    {
+                       UserUpdateDto=userUpdateDto,
+                        UserUpdatePartial = await this.RenderViewToStringAsync("_UserUpdatePartial", userUpdateDto)
+                    });
+                    return Json(userUpdateErrorViewModel);
+                }
+            }
+            else
+            {
+                var userUpdateModelStateViewModel = JsonSerializer.Serialize(new UserUpdateAjaxViewModel
+                {
+                    UserUpdateDto = userUpdateDto,
+                    UserUpdatePartial = await this.RenderViewToStringAsync("_UserUpdatePartial", userUpdateDto)
+                });
+                return Json(userUpdateModelStateViewModel);
+            }
+
+        }
+
+
+        public async Task<string> ImageUpload(string userName, IFormFile pictureFile)
         {
             string wwwroot = _env.WebRootPath;
             //resmin uzantısı olmadan atama yapıyor
             //    string fileName = Path.GetFileNameWithoutExtension(userAddDto.PictureFile.FileName);
-            string fileExtension = Path.GetExtension(userAddDto.PictureFile.FileName);
+            string fileExtension = Path.GetExtension(pictureFile.FileName);
             DateTime dateTime = DateTime.Now;
 
             //hakandurgay_587_5_38_12_3_10_2020.png gibi bir uzantı oluşuyor
-            string fileName = $"{userAddDto.UserName}_{dateTime.FullDateAndTimeStringWithUnderscore()}{fileExtension}";
+            string fileName = $"{userName}_{dateTime.FullDateAndTimeStringWithUnderscore()}{fileExtension}";
             var path = Path.Combine($"{wwwroot}/img", fileName);
             await using (var stream = new FileStream(path, FileMode.Create))
             {
-                await userAddDto.PictureFile.CopyToAsync(stream);
+                await pictureFile.CopyToAsync(stream);
             }
             return fileName; // "~img/user.Picture" ile kullanılabilir
 
         }
+
         public bool ImageDelete(string pictureName)//resim silindiğinde wwwroottan da silinmesi için
         {
             string wwwroot = _env.WebRootPath;

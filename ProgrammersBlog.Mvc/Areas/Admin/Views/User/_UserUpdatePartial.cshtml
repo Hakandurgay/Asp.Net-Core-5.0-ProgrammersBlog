@@ -31,6 +31,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Picture"></label>
+                        <input asp-for="Picture" type="hidden" /> @*burası olmazsa boş kaldığında hata verir*@
                         <img  class="img-fluid img-thumbnail" src="~/img/@Model.Picture" alt="@Model.UserName"/>
           
                     </div>
