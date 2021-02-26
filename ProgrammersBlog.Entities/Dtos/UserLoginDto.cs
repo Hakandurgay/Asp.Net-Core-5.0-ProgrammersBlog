@@ -8,18 +8,21 @@ namespace ProgrammersBlog.Entities.Dtos
 {
     public class UserLoginDto
     {
+
+
+        [DisplayName("E-Posta Adresi")]
+        [Required(ErrorMessage = "{0} boş geçilmemelidir.")]
+        [MaxLength(100, ErrorMessage = "{0} {1} karakterden büyük olmamalıdır.")]
+        [MinLength(10, ErrorMessage = "{0} {1} karakterden küçük olmamalıdır.")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         [DisplayName("Şifre")]
-        [Required(ErrorMessage = "{0} Boş Geçilmemelidir.")]  //kategori adı yazar sıfır yerine
-        [MaxLength(30, ErrorMessage = "{0} {1} Karakterden Büyük Olmamalıdır.")] //fluent api ile veritabanına eklerken kontrol ediliyordu burda kullanıcıdan alınırken kontrol ediliyor
-        [MinLength(5, ErrorMessage = "{0} {1} Karakterden Küçük Olmamalıdır.")]
+        [Required(ErrorMessage = "{0} boş geçilmemelidir.")]
+        [MaxLength(30, ErrorMessage = "{0} {1} karakterden büyük olmamalıdır.")]
+        [MinLength(5, ErrorMessage = "{0} {1} karakterden küçük olmamalıdır.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        [DisplayName("Telefon Numarası")]
-        [Required(ErrorMessage = "{0} Boş Geçilmemelidir.")]  //kategori adı yazar sıfır yerine
-        [MaxLength(13, ErrorMessage = "{0} {1} Karakterden Büyük Olmamalıdır.")] //fluent api ile veritabanına eklerken kontrol ediliyordu burda kullanıcıdan alınırken kontrol ediliyor
-        [MinLength(13, ErrorMessage = "{0} {1} Karakterden Küçük Olmamalıdır.")]
-
+        [DisplayName("Beni Hatırla")]
         public bool RememberMe { get; set; }
     }
 }

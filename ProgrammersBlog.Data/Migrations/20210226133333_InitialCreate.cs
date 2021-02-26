@@ -246,19 +246,42 @@ namespace ProgrammersBlog.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "CreatedByName", "CreatedDate", "Description", "IsActive", "IsDeleted", "ModifiedByName", "ModifiedDate", "Name", "Note" },
-                values: new object[] { 1, "InitialCreate", new DateTime(2021, 2, 9, 14, 32, 38, 584, DateTimeKind.Local).AddTicks(2772), "C# Programlama Dili İçin En Güncel Bilgiler", true, false, "InitialCreate", new DateTime(2021, 2, 9, 14, 32, 38, 584, DateTimeKind.Local).AddTicks(3885), "C#", "C++ Kategori Bilgisi" });
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, "da5cedbb-929c-40a2-ab77-3d41ed9e5780", "Admin", "ADMIN" },
+                    { 2, "567e52bc-496b-40aa-8e5b-f2030b6e9c0f", "Editor", "EDITOR" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Picture", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { 1, 0, "b8a9ce74-7e6b-4f85-ab8a-4428c3c5e009", "adminuser@gmail.com", true, false, null, "ADMINUSER@GMAIL.COM", "ADMINUSER", "AQAAAAEAACcQAAAAEL7JlTZKAUi9sK39yqgaCmw54+l3eJhA0kQz8NzK1BDa+soQGxkqSqsrPBxjhHFhbA==", "+905555555555", true, "defaultUser.png", "67747f12-1acc-4af8-be3b-51a92e367a0a", false, "adminuser" },
+                    { 2, 0, "d7fcb213-c7ba-4e24-bb67-e14107b61592", "editoruser@gmail.com", true, false, null, "EDITORUSER@GMAIL.COM", "EDITORUSER", "AQAAAAEAACcQAAAAEHMVVAQIuGhLnBjxe0pcA7e8NBlEi/zgOXjIs7Kn49L5ZSikYidCVtF/yeeCr+xQgg==", "+905555555555", true, "defaultUser.png", "535fff55-aea6-4d35-beef-5056fe2c055d", false, "editoruser" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CreatedByName", "CreatedDate", "Description", "IsActive", "IsDeleted", "ModifiedByName", "ModifiedDate", "Name", "Note" },
-                values: new object[] { 2, "InitialCreate", new DateTime(2021, 2, 9, 14, 32, 38, 584, DateTimeKind.Local).AddTicks(5382), "C++ Programlama Dili İçin En Güncel Bilgiler", true, false, "InitialCreate", new DateTime(2021, 2, 9, 14, 32, 38, 584, DateTimeKind.Local).AddTicks(5384), "C++", "C# Kategori Bilgisi" });
+                values: new object[,]
+                {
+                    { 1, "InitialCreate", new DateTime(2021, 2, 26, 16, 33, 32, 343, DateTimeKind.Local).AddTicks(827), "C# Programlama Dili İçin En Güncel Bilgiler", true, false, "InitialCreate", new DateTime(2021, 2, 26, 16, 33, 32, 343, DateTimeKind.Local).AddTicks(1806), "C#", "C++ Kategori Bilgisi" },
+                    { 2, "InitialCreate", new DateTime(2021, 2, 26, 16, 33, 32, 343, DateTimeKind.Local).AddTicks(3414), "C++ Programlama Dili İçin En Güncel Bilgiler", true, false, "InitialCreate", new DateTime(2021, 2, 26, 16, 33, 32, 343, DateTimeKind.Local).AddTicks(3416), "C++", "C# Kategori Bilgisi" },
+                    { 3, "InitialCreate", new DateTime(2021, 2, 26, 16, 33, 32, 343, DateTimeKind.Local).AddTicks(3421), "Javascript Programlama Dili İçin En Güncel Bilgiler", true, false, "InitialCreate", new DateTime(2021, 2, 26, 16, 33, 32, 343, DateTimeKind.Local).AddTicks(3423), "Javascript", "Javascript Kategori Bilgisi" }
+                });
 
             migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "CreatedByName", "CreatedDate", "Description", "IsActive", "IsDeleted", "ModifiedByName", "ModifiedDate", "Name", "Note" },
-                values: new object[] { 3, "InitialCreate", new DateTime(2021, 2, 9, 14, 32, 38, 584, DateTimeKind.Local).AddTicks(5389), "Javascript Programlama Dili İçin En Güncel Bilgiler", true, false, "InitialCreate", new DateTime(2021, 2, 9, 14, 32, 38, 584, DateTimeKind.Local).AddTicks(5391), "Javascript", "Javascript Kategori Bilgisi" });
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { 2, 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Articles_CategoryId",
