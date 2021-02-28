@@ -84,6 +84,15 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 
 
         }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home", new { Area = "" });
+        }
+
+
         [Authorize(Roles = "Admin")]
 
         [HttpGet]
@@ -140,6 +149,8 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             var userUpdateDto = _mapper.Map<UserUpdateDto>(user);
             return PartialView("_UserUpdatePartial", userUpdateDto);
         }
+
+
         [Authorize(Roles = "Admin")]
 
         [HttpGet]
@@ -256,6 +267,17 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             }
 
         }
+        [Authorize]
+        [HttpGet]
+        public async Task<ViewResult> ChangeDetails()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var updateDto = _mapper.Map<UserUpdateDto>(user);
+            return View(updateDto);
+        }
+
+
+
         [Authorize(Roles = "Admin,Editor")]
 
         public async Task<string> ImageUpload(string userName, IFormFile pictureFile)
